@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mert Yazılım | Web Tasarım & Dinamik QR Menü Sistemleri</title>
+  <meta name="description" content="Restoran & kafeler için saniyeler içinde güncellenen dinamik QR menü sistemleri ve dönüşüm odaklı kurumsal web siteleri.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0a0d14; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-[#0a0d14] text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950">
+
+  <!-- NAVBAR -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80 py-3.5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-400 p-0.5 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+          <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center text-emerald-400 font-black">
+            &lt;/&gt;
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-extrabold text-lg tracking-tight text-white flex items-center gap-1">
+            MERT <span class="text-emerald-400">YAZILIM</span>
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          </span>
+          <span class="text-[10px] text-slate-400 uppercase tracking-widest font-medium">Dijital Hizmetler</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
+        <a href="#services" class="hover:text-emerald-400 transition-colors">Hizmetler & İlanlar</a>
+        <a href="#qr-demo" class="hover:text-emerald-400 transition-colors">Canlı QR Menü Demo</a>
+        <a href="#process" class="hover:text-emerald-400 transition-colors">Nasıl Çalışır?</a>
+        <a href="#contact" class="hover:text-emerald-400 transition-colors">İletişim</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <!-- Language Switcher -->
+        <div class="relative">
+          <button id="lang-btn" onclick="toggleLangDropdown()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 border border-slate-700/80 hover:text-white transition-all">
+            <i data-lucide="globe" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span id="current-lang-text">🇹🇷 TR</span>
+            <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400"></i>
+          </button>
+          <div id="lang-dropdown" class="hidden absolute right-0 mt-2 w-32 bg-slate-900 border border-slate-800 rounded-xl shadow-xl py-1 z-50">
+            <button onclick="setLanguage('tr')" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium text-left hover:bg-slate-800 text-slate-200 hover:text-emerald-400">
+              <span>🇹🇷 Türkçe</span>
+              <span id="check-tr" class="text-emerald-400">✓</span>
+            </button>
+            <button onclick="setLanguage('en')" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium text-left hover:bg-slate-800 text-slate-200 hover:text-emerald-400">
+              <span>🇬🇧 English</span>
+              <span id="check-en" class="text-emerald-400 hidden">✓</span>
+            </button>
+          </div>
+        </div>
+
+        <a href="https://wa.me/905000000000?text=Merhaba,%20web%20ve%20QR%20menü%20hizmetleriniz%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" class="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 border border-slate-700/80 hover:text-white transition-all">
+          <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400"></i>
+          <span>WhatsApp</span>
+        </a>
+        <a href="#contact" id="btn-quote" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-950 bg-emerald-400 hover:bg-emerald-300 shadow-md shadow-emerald-500/20 transition-all">
+          Hemen Teklif Al
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="hero" class="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden text-center">
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-emerald-500/15 blur-[120px] rounded-full -z-10 pointer-events-none"></div>
+    <div class="max-w-4xl mx-auto px-4 space-y-6">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-emerald-500/30 text-xs font-semibold text-emerald-400">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        2026 Yeni Nesil Dijital Çözümler
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.15]">
+        İşletmenizi Dijitale Taşıyan <br>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
+          Modern Web & QR Menü
+        </span> Çözümleri
+      </h1>
+
+      <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+        Restoran & kafeler için saniyeler içinde güncellenen <strong>dinamik QR menü sistemleri</strong> ve dönüşüm odaklı modern <strong>kurumsal web siteleri</strong>.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+        <a href="#services" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm shadow-xl shadow-emerald-500/25 transition-all">
+          Hizmet Paketlerini İncele
+        </a>
+        <a href="https://wa.me/905000000000?text=Merhaba,%20hizmetleriniz%20hakkında%20teklif%20almak%20istiyorum." target="_blank" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 font-semibold text-sm border border-slate-700 transition-all flex items-center justify-center gap-2">
+          <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400"></i>
+          <span>WhatsApp'tan Hemen Yaz</span>
+        </a>
+      </div>
+
+      <!-- Trust Badges -->
+      <div class="pt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto">
+        <div class="p-3 rounded-xl bg-slate-900/50 border border-slate-800 text-xs text-slate-300 flex items-center justify-center gap-2">
+          <i data-lucide="zap" class="w-4 h-4 text-emerald-400"></i>
+          <span>24-48s Hızlı Teslimat</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-900/50 border border-slate-800 text-xs text-slate-300 flex items-center justify-center gap-2">
+          <i data-lucide="smartphone" class="w-4 h-4 text-cyan-400"></i>
+          <span>%100 Mobil Uyum</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-900/50 border border-slate-800 text-xs text-slate-300 flex items-center justify-center gap-2">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+          <span>95+ Google Hız Skoru</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-900/50 border border-slate-800 text-xs text-slate-300 flex items-center justify-center gap-2">
+          <i data-lucide="headphones" class="w-4 h-4 text-amber-400"></i>
+          <span>7/24 Kesintisiz Destek</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES SECTION WITH DYNAMIC FILTERING -->
+  <section id="services" class="py-20 bg-slate-950/60 border-t border-slate-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          Aktif Hizmet Paketleri & İlanlar
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">
+          Şeffaf & Anahtar Teslim Paketler
+        </h2>
+        <p class="text-slate-400 text-sm mt-2">Gizli maliyet yok. İşletmenize uygun paketi seçin ve anında teklif alın.</p>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="flex flex-wrap items-center justify-center gap-2 mb-10" id="filter-buttons">
+        <button onclick="filterCategory('all')" class="cat-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-slate-950 transition-all" data-cat="all">Tüm Hizmetler</button>
+        <button onclick="filterCategory('qr-menu')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 transition-all" data-cat="qr-menu">Dinamik QR Menü</button>
+        <button onclick="filterCategory('web')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 transition-all" data-cat="web">Kurumsal Web Tasarım</button>
+      </div>
+
+      <!-- Services Grid (Exactly 2 Core Packages) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto" id="services-grid">
+        <!-- Service Card 1: Dinamik QR Menü -->
+        <div class="service-item relative group rounded-2xl p-6 md:p-8 bg-slate-900/90 border border-emerald-500/40 shadow-xl flex flex-col justify-between" data-category="qr-menu">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="p-3 rounded-xl bg-slate-800 text-emerald-400">
+                <i data-lucide="qr-code" class="w-6 h-6"></i>
+              </div>
+              <span class="text-xs px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold">En Çok Tercih Edilen</span>
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Restoran & Kafe Dinamik QR Menü</h3>
+            <p class="text-slate-400 text-sm mb-5">Kağıt menü maliyetine son! Saniyeler içinde fiyat ve ürün güncelleyebileceğiniz modern bulut QR menü sistemi.</p>
+            <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300 mb-6">
+              <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i> Sınırsız Kategori ve Ürün Ekleme</li>
+              <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i> Anlık Fiyat & Stok Güncelleme Paneli</li>
+              <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i> Çoklu Dil Desteği (TR/EN/AR/RU)</li>
+              <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i> 1 Yıl Bulut Barındırma & Domain</li>
+              <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i> 3 Tur Kapsamlı Revize Hakkı</li>
+            </ul>
+          </div>
+          <div class="pt-5 border-t border-slate-800">
+            <div class="flex justify-between items-baseline mb-4">
+              <div>
+                <span class="text-xs text-slate-400 block font-medium">Başlangıç Fiyatı</span>
+                <span class="text-2xl md:text-3xl font-black text-white">₺3.499</span>
+              </div>
+              <span class="text-xs font-semibold text-emerald-400 bg-emerald-950/40 px-2.5 py-1 rounded-md border border-emerald-500/20">24-48 Saat Teslim</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2.5">
+              <button onclick="openDetailModal('Restoran & Kafe Dinamik QR Menü', 'qr-menu')" class="py-3 px-3 rounded-xl bg-slate-800 text-xs font-semibold text-slate-200 hover:bg-slate-700">Detayları Gör</button>
+              <button onclick="prefillQuote('Restoran & Kafe Dinamik QR Menü')" class="py-3 px-3 rounded-xl bg-emerald-500 text-xs font-bold text-slate-950 hover:bg-emerald-400">Teklif Al</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service Card 2: Modern Kurumsal Web Sitesi -->
+        <div class="service-item relative group rounded-2xl p-6 md:p-8 bg-slate-900/90 border border-slate-800 hover:border-slate-700 shadow-lg flex flex-col justify-between" data-category="web">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="p-3 rounded-xl bg-slate-800 text-cyan-400">
+                <i data-lucide="globe" class="w-6 h-6"></i>
+              </div>
+              <span class="text-xs px-2.5 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-semibold">Hızlı Teslimat</span>
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Modern Kurumsal Web Sitesi</h3>
+            <p class="text-slate-400 text-sm mb-5">Markanızı prestijli gösteren, ultra hızlı ve tüm cihazlarla %100 uyumlu anahtar teslim kurumsal web sitesi.</p>
+            <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300 mb-6">
+              <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i> Özgün & Modern UI/UX Tasarım</li>
+              <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i> WhatsApp'tan Anında İletişim</li>
+              <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i> Google İşletme Kurulumu & Harita</li>
+              <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i> 5 Revize Hakkı</li>
+            </ul>
+          </div>
+          <div class="pt-5 border-t border-slate-800">
+            <div class="flex justify-between items-baseline mb-4">
+              <div>
+                <span class="text-xs text-slate-400 block font-medium">Başlangıç Fiyatı</span>
+                <span class="text-2xl md:text-3xl font-black text-white">₺6.999</span>
+              </div>
+              <span class="text-xs font-semibold text-cyan-400 bg-cyan-950/40 px-2.5 py-1 rounded-md border border-cyan-500/20">3-5 Gün Teslim</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2.5">
+              <button onclick="openDetailModal('Modern Kurumsal Web Sitesi', 'web')" class="py-3 px-3 rounded-xl bg-slate-800 text-xs font-semibold text-slate-200 hover:bg-slate-700">Detayları Gör</button>
+              <button onclick="prefillQuote('Kurumsal Web Sitesi')" class="py-3 px-3 rounded-xl bg-emerald-500 text-xs font-bold text-slate-950 hover:bg-emerald-400">Teklif Al</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE QR MENU DEMO PREVIEW -->
+  <section id="qr-demo" class="py-20 relative overflow-hidden bg-slate-900/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <span class="text-xs font-semibold px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+          İnteraktif Canlı Mockup
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">
+          Kafeler ve Restoranlar İçin Canlı QR Deneyimi
+        </h2>
+        <p class="text-slate-400 text-sm mt-2">Telefon simülatöründe kategorileri değiştirerek sistemi canlı deneyin.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <!-- Phone Mockup -->
+        <div class="lg:col-span-6 flex flex-col items-center">
+          <!-- Interactive Hint Badge -->
+          <div class="mb-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-semibold text-emerald-300 animate-pulse">
+            <i data-lucide="mouse-pointer-click" class="w-4 h-4 text-emerald-400"></i>
+            <span>👆 Ekrana tıklayarak kategorileri canlı deneyebilirsiniz</span>
+          </div>
+
+          <div class="relative w-full max-w-[340px] bg-slate-950 rounded-[44px] p-4 shadow-2xl border-[6px] border-slate-800">
+            <!-- Screen -->
+            <div class="bg-slate-900 rounded-[34px] overflow-hidden flex flex-col h-[540px] border border-slate-800 relative">
+              <div class="bg-slate-950 pt-7 p-4 border-b border-slate-800">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h4 class="font-bold text-xs text-white">Aroma Specialty Cafe</h4>
+                    <span class="text-[10px] text-emerald-400">● Açık • Masa 04</span>
+                  </div>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">TR / EN</span>
+                </div>
+                <!-- Categories -->
+                <div class="flex items-center gap-1.5 mt-3 overflow-x-auto no-scrollbar pb-1">
+                  <button onclick="changeDemoCat('coffee')" id="dcat-coffee" class="shrink-0 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-emerald-500 text-slate-950 transition-all">☕ Kahveler</button>
+                  <button onclick="changeDemoCat('desserts')" id="dcat-desserts" class="shrink-0 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-slate-800 text-slate-300 hover:text-white transition-all">🍰 Tatlılar</button>
+                  <button onclick="changeDemoCat('burgers')" id="dcat-burgers" class="shrink-0 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-slate-800 text-slate-300 hover:text-white transition-all">🍔 Burgerler</button>
+                </div>
+              </div>
+
+              <!-- Product items container -->
+              <div id="demo-items" class="flex-1 overflow-y-auto p-3 space-y-2.5">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Benefits -->
+        <div class="lg:col-span-6 space-y-6">
+          <h3 class="text-2xl sm:text-3xl font-bold text-white leading-snug">
+            Matbaa Maliyetlerine Son Verin, <br>
+            <span class="text-emerald-400">Sipariş Sürecini Hızlandırın</span>
+          </h3>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Fiyatlar değiştiğinde tekrar tekrar menü bastırmak zorunda kalmayın. Tek bir panelden tüm menüyü ve görselleri anında güncelleyin.
+          </p>
+          <div class="space-y-3">
+            <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex gap-3">
+              <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+              <div>
+                <h5 class="text-sm font-semibold text-white">Anlık & Kolay Yönetim Paneli</h5>
+                <p class="text-xs text-slate-400">Telefonunuzdan tek tıkla ürünün fiyatını değiştirin veya tükenen ürünü gizleyin.</p>
+              </div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex gap-3">
+              <i data-lucide="check-circle-2" class="w-5 h-5 text-cyan-400 shrink-0 mt-0.5"></i>
+              <div>
+                <h5 class="text-sm font-semibold text-white">Yabancı Turistler İçin Otomatik Çeviri</h5>
+                <p class="text-xs text-slate-400">İngilizce, Rusça ve Arapça desteği ile sipariş karmaşasına son verin.</p>
+              </div>
+            </div>
+          </div>
+          <a href="#contact" class="inline-block px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm shadow-lg shadow-emerald-500/20 transition-all">
+            İşletmeniz İçin QR Menü İsteyin
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS SECTION -->
+  <section id="process" class="py-20 bg-slate-950 border-t border-slate-900 text-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-extrabold text-white mb-2">4 Adımda Nasıl Çalışıyoruz?</h2>
+      <p class="text-slate-400 text-sm mb-12">Karmaşık süreçler olmadan anahtar teslim geliştirme.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-left">
+          <span class="text-3xl font-black text-emerald-400/40 font-mono">01</span>
+          <h4 class="text-lg font-bold text-white mt-2 mb-1">İhtiyaç Analizi</h4>
+          <p class="text-xs text-slate-400">Taleplerinizi ve bütçenizi dinleyip en uygun yol haritasını çiziyoruz.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-left">
+          <span class="text-3xl font-black text-emerald-400/40 font-mono">02</span>
+          <h4 class="text-lg font-bold text-white mt-2 mb-1">Tasarım & Kodlama</h4>
+          <p class="text-xs text-slate-400">Markanıza özel mobil uyumlu modern arayüzü sıfırdan geliştiriyoruz.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-left">
+          <span class="text-3xl font-black text-emerald-400/40 font-mono">03</span>
+          <h4 class="text-lg font-bold text-white mt-2 mb-1">Demo & Onay</h4>
+          <p class="text-xs text-slate-400">Sistemi test linkiyle incelemenize sunup revizyonları tamamlıyoruz.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-left">
+          <span class="text-3xl font-black text-emerald-400/40 font-mono">04</span>
+          <h4 class="text-lg font-bold text-white mt-2 mb-1">Yayına Alma & Destek</h4>
+          <p class="text-xs text-slate-400">Sistemi canlıya alıyor, paneli öğretiyor ve 7/24 destek sağlıyoruz.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT & QUOTE FORM -->
+  <section id="contact" class="py-20 bg-slate-950 border-t border-slate-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-5 space-y-5">
+          <span class="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Ücretsiz Keşif & Teklif</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Projenizi Birlikte Hayata Geçirelim</h2>
+          <p class="text-slate-300 text-sm leading-relaxed">Formu doldurun veya doğrudan WhatsApp / LinkedIn üzerinden yazarak projenizi anlatın; 15 dakika içinde fiyat teklifinizi iletelim.</p>
+          
+          <div class="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30 space-y-2.5">
+            <h5 class="text-xs font-bold text-white mb-1">⚡ Hızlı İletişim Kanalları</h5>
+            <p class="text-xs text-slate-400">Hiç beklemeden doğrudan WhatsApp üzerinden yazabilir, LinkedIn veya Instagram üzerinden bağlantı kurabilirsiniz.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+              <button onclick="sendViaWhatsApp()" class="w-full py-2.5 px-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 transition-all">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                <span>WhatsApp</span>
+              </button>
+              <a href="https://www.linkedin.com/in/h%C3%BCkm%C3%BC-mert-yaraman-260ab32b1/" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-400 hover:text-white font-bold text-xs flex items-center justify-center gap-1.5 border border-slate-700 transition-all text-center">
+                <i data-lucide="linkedin" class="w-3.5 h-3.5"></i>
+                <span>LinkedIn</span>
+              </a>
+              <a href="javascript:void(0)" title="Instagram (Çok Yakında)" class="w-full py-2.5 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-pink-400 hover:text-pink-300 font-bold text-xs flex items-center justify-center gap-1.5 border border-slate-700 transition-all text-center cursor-pointer">
+                <i data-lucide="instagram" class="w-3.5 h-3.5"></i>
+                <span>Instagram</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <form id="quote-form" onsubmit="handleFormSubmit(event)" class="p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-4">
+            <h3 class="text-xl font-bold text-white mb-2">Hemen Teklif İste</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Ad Soyad *</label>
+                <input type="text" id="c-name" required placeholder="Ahmet Yılmaz" class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Telefon (WhatsApp) *</label>
+                <input type="tel" id="c-phone" required placeholder="05XX XXX XX XX" class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">İlgilendiğiniz Hizmet</label>
+              <select id="c-service" class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
+                <option value="Restoran & Kafe Dinamik QR Menü">Restoran & Kafe Dinamik QR Menü</option>
+                <option value="Kurumsal Web Sitesi">Kurumsal Web Sitesi</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Proje Notları</label>
+              <textarea id="c-notes" rows="3" placeholder="İşletmenizin adı ve özel talepleriniz..." class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100 focus:outline-none focus:border-emerald-500"></textarea>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+              <button type="submit" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm">Teklif Talebini Gönder</button>
+              <button type="button" onclick="sendViaWhatsApp()" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 font-bold text-xs sm:text-sm border border-emerald-500/30">WhatsApp'a Aktar</button>
+            </div>
+          </form>
+          <div id="form-success" class="hidden p-8 rounded-3xl bg-slate-900 border border-emerald-500/40 text-center space-y-3">
+            <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-xl">✓</div>
+            <h4 class="text-xl font-bold text-white">Talebiniz Başarıyla Alındı!</h4>
+            <p class="text-xs text-slate-300">En geç 15 dakika içinde sizinle iletişime geçeceğiz.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-950 border-t border-slate-800 text-slate-500 py-8 text-center text-xs space-y-3">
+    <div class="flex items-center justify-center gap-3">
+      <a href="https://www.linkedin.com/in/h%C3%BCkm%C3%BC-mert-yaraman-260ab32b1/" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-cyan-400 border border-slate-800 transition-colors" title="LinkedIn">
+        <i data-lucide="linkedin" class="w-4 h-4"></i>
+      </a>
+      <a href="javascript:void(0)" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-pink-400 border border-slate-800 transition-colors" title="Instagram (Yakında)">
+        <i data-lucide="instagram" class="w-4 h-4"></i>
+      </a>
+    </div>
+    <p>© 2026 Mert Yazılım Dijital Çözümler. Tüm Hakları Saklıdır.</p>
+  </footer>
+
+  <!-- FLOATING WHATSAPP BUTTON -->
+  <a href="https://wa.me/905000000000?text=Merhaba,%20dijital%20hizmetleriniz%20hakkında%20teklif%20almak%20istiyorum." target="_blank" class="fixed bottom-6 right-6 z-40 p-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-2xl transition-all">
+    <i data-lucide="message-circle" class="w-6 h-6"></i>
+  </a>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // Initialize icons
+    lucide.createIcons();
+
+    // Language Toggle logic
+    let activeLanguage = 'tr';
+    function toggleLangDropdown() {
+      const dd = document.getElementById('lang-dropdown');
+      dd.classList.toggle('hidden');
+    }
+
+    function setLanguage(lang) {
+      activeLanguage = lang;
+      document.getElementById('current-lang-text').innerText = lang === 'tr' ? '🇹🇷 TR' : '🇬🇧 EN';
+      document.getElementById('check-tr').classList.toggle('hidden', lang !== 'tr');
+      document.getElementById('check-en').classList.toggle('hidden', lang !== 'en');
+      document.getElementById('lang-dropdown').classList.add('hidden');
+      
+      // Update basic CTA
+      const quoteBtn = document.getElementById('btn-quote');
+      if (quoteBtn) {
+        quoteBtn.innerText = lang === 'tr' ? 'Hemen Teklif Al' : 'Get Quote';
+      }
+    }
+
+    // Close dropdown on outside click
+    window.addEventListener('click', function(e) {
+      const btn = document.getElementById('lang-btn');
+      const dd = document.getElementById('lang-dropdown');
+      if (btn && dd && !btn.contains(e.target) && !dd.contains(e.target)) {
+        dd.classList.add('hidden');
+      }
+    });
+
+    // Filtering logic
+    function filterCategory(cat) {
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        if(btn.getAttribute('data-cat') === cat) {
+          btn.className = 'cat-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-slate-950 transition-all';
+        } else {
+          btn.className = 'cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 transition-all';
+        }
+      });
+
+      document.querySelectorAll('.service-item').forEach(item => {
+        if(cat === 'all' || item.getAttribute('data-category') === cat) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // Prefill form and scroll
+    function prefillQuote(serviceName) {
+      const select = document.getElementById('c-service');
+      if (select) {
+        select.value = serviceName.includes('QR') ? 'Restoran & Kafe Dinamik QR Menü' : 'Kurumsal Web Sitesi';
+      }
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function openDetailModal(title, cat) {
+      alert(`[Detaylı İnceleme]\n${title}\n\nBu paket hakkında doğrudan WhatsApp veya form üzerinden hızlı teklif alabilirsiniz.`);
+    }
+
+    // Interactive Demo Cafe Items
+    const demoData = {
+      coffee: [
+        { name: 'Caramel Macchiato', desc: 'Espresso, vanilya & özel karamel sos', price: 135, tag: 'Şefin Tercihi' },
+        { name: 'Spanish Latte', desc: 'Duble ristretto & tatlı süt köpüğü', price: 145 },
+        { name: 'Flat White (Specialty)', desc: 'Etiyopya çekirdeklerinden mikro köpük', price: 125 }
+      ],
+      desserts: [
+        { name: 'San Sebastian Cheesecake', desc: 'Sıcak Belçika çikolatası ile', price: 195, tag: 'Favori' },
+        { name: 'Lotus Biscoff Tiramisu', desc: 'Mascarpone & Lotus kıtırlığı', price: 185 }
+      ],
+      burgers: [
+        { name: 'Truffle Smash Burger', desc: '160g köfte, karamelize soğan, trüf sos', price: 290, tag: 'Best Seller' },
+        { name: 'Crispy Cajun Chicken', desc: 'Çıtır tavuk fileto & ballı hardal', price: 250 }
+      ]
+    };
+
+    function renderDemoItems(cat) {
+      const container = document.getElementById('demo-items');
+      container.innerHTML = '';
+      (demoData[cat] || []).forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'p-2.5 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-center justify-between gap-3';
+        div.innerHTML = `
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-1">
+              <h5 class="font-bold text-xs text-white truncate">${item.name}</h5>
+              ${item.tag ? `<span class="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 shrink-0">${item.tag}</span>` : ''}
+            </div>
+            <p class="text-[10px] text-slate-400 line-clamp-1 mt-0.5">${item.desc}</p>
+            <span class="text-xs font-black text-emerald-400 block mt-1">₺${item.price}</span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function changeDemoCat(cat) {
+      ['coffee', 'desserts', 'burgers'].forEach(c => {
+        const b = document.getElementById('dcat-' + c);
+        if(b) {
+          b.className = c === cat 
+            ? 'shrink-0 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-emerald-500 text-slate-950 scale-105 shadow-sm transition-all'
+            : 'shrink-0 px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-slate-800 text-slate-300 hover:text-white transition-all';
+        }
+      });
+      renderDemoItems(cat);
+    }
+
+    // Initial demo load
+    renderDemoItems('coffee');
+
+    // WhatsApp Message Builder
+    function sendViaWhatsApp() {
+      const name = document.getElementById('c-name').value || 'İsimsiz';
+      const phone = document.getElementById('c-phone').value || '-';
+      const service = document.getElementById('c-service').value;
+      const notes = document.getElementById('c-notes').value || 'Detaylar sohbetten paylaşılacak.';
+      
+      const msg = `👋 *Yeni Teklif Talebi*\n*İsim:* ${name}\n*Telefon:* ${phone}\n*Hizmet:* ${service}\n*Notlar:* ${notes}`;
+      window.open(`https://wa.me/905000000000?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.innerText = 'Gönderiliyor...';
+        submitBtn.disabled = true;
+      }
+
+      const name = document.getElementById('c-name').value;
+      const phone = document.getElementById('c-phone').value;
+      const service = document.getElementById('c-service').value;
+      const notes = document.getElementById('c-notes').value || 'Detay girilmedi';
+
+      try {
+        await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_key: 'YOUR_ACCESS_KEY_HERE',
+            subject: `🔔 Yeni Teklif Talebi: ${name} - ${service}`,
+            from_name: 'Mert Yazılım Web Sitesi',
+            ad_soyad: name,
+            telefon: phone,
+            hizmet_turu: service,
+            proje_notu: notes
+          })
+        });
+      } catch (err) {
+        // test mode
+      }
+
+      document.getElementById('quote-form').classList.add('hidden');
+      document.getElementById('form-success').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
